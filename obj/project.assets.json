@@ -11507,11 +11507,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator\\AmazonSimulator.csproj",
+      "projectUniqueName": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\AmazonSimulator.csproj",
       "projectName": "AmazonSimulator",
-      "projectPath": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator\\AmazonSimulator.csproj",
+      "projectPath": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\AmazonSimulator.csproj",
       "packagesPath": "C:\\Users\\pawpr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator\\obj\\",
+      "outputPath": "C:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

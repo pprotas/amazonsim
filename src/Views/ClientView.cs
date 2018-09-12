@@ -40,7 +40,8 @@ namespace Views {
             byte[] buffer = Encoding.UTF8.GetBytes(message);
             try {
                 await socket.SendAsync(new ArraySegment<byte>(buffer, 0, message.Length), WebSocketMessageType.Text, true, CancellationToken.None);
-            } catch(Exception e) {
+            } catch (Exception)
+            {
                 Console.WriteLine("Error while sending information to client, probably a Socket disconnect");
             }
         }

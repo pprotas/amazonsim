@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Models
 {
-    public class Model3D : IUpdatable
+    public abstract class Model3D
     {
         protected double _x = 0;
         protected double _y = 0;
@@ -24,34 +24,6 @@ namespace Models
         public double rotationZ { get { return _rZ; } }
 
         public bool needsUpdate = true;
-
-        public Model3D()
-        {
-            this.type = "model3d";
-            this.guid = Guid.NewGuid();
-
-            this._x = 0;
-            this._y = 0;
-            this._z = 0;
-
-            this._rX = 0;
-            this._rY = 0;
-            this._rZ = 0;
-
-        }
-        public Model3D(double x, double y, double z, double rotationX, double rotationY, double rotationZ)
-        {
-            this.type = "model3d";
-            this.guid = Guid.NewGuid();
-
-            this._x = x;
-            this._y = y;
-            this._z = z;
-
-            this._rX = rotationX;
-            this._rY = rotationY;
-            this._rZ = rotationZ;
-        }
 
         public virtual void Move(double x, double y, double z)
         {
