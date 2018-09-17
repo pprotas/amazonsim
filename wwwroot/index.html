@@ -81,13 +81,15 @@
             exampleSocket.onmessage = function (event) {
                 var command = parseCommand(event.data);
                 if (command.command == "update") {
+                    var models = new THREE.Group();
+                    scene.add(models);
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                         if (command.parameters.type == "robot") {
                             var robot = new THREE.Group();
-                            scene.add(robot);
                             loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
                                 mesh.scale.set(0.05, 0.05, 0.05);
                                 robot.add(mesh);
+                                models.add(robot);
                             });
                             worldObjects[command.parameters.guid] = robot;
                         }
