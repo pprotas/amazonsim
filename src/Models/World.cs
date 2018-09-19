@@ -10,12 +10,28 @@ namespace Models {
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         
         public World() {
+            Point a = new Point(0,0,0);
+            Point b = new Point(5,0,0);
+            Point c = new Point(0,0,5);
+            a.AddNode(new List<Point>(){b, c});
+            c.AddNode(b);
+            Graph pointGraph = new Graph(new List<Point>(){a, b, c});
+            SendCommandToObservers(new SendGraph(pointGraph));
             Robot r = CreateRobot(0,0,0);
+            r.Move(c.x, c.y, c.z);
             Robot r2 = CreateRobot(10,0,10);
+
+            Rack p = CreateRack(5,0,5);
         }
 
         private Robot CreateRobot(double x, double y, double z) {
             Robot r = new Robot(x,y,z,0,0,0);
+            worldObjects.Add(r);
+            return r;
+        }
+
+        private Rack CreateRack(double x, double y, double z) {
+            Rack r = new Rack(x,y,z,0,0,0);
             worldObjects.Add(r);
             return r;
         }

@@ -35,4 +35,9 @@ namespace Controllers {
         public UpdateModel3DCommand(Model3D parameters) : base("update", parameters) {
         }
     }
+
+    public class SendGraph : Command{
+        public SendGraph(Graph parameters) : base("graph", parameters) {            
+        }
+    }
 }

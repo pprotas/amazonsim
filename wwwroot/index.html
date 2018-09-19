@@ -96,7 +96,10 @@
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":5000" + "/connect_client");
             exampleSocket.onmessage = function (event) {
                 var command = parseCommand(event.data);
-                if (command.command == "update") {
+                if (command.command == "graph") {
+                    
+                }
+                else if (command.command == "update") {
                     var models = new THREE.Group();
                     scene.add(models);
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
