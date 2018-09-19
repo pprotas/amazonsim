@@ -19,11 +19,9 @@
         window.onload = function () {
             var camera, scene, renderer;
             var cameraControls;
-            var robot1;
-            var robotCounter = 0;
+
             var worldObjects = {};
             var robots = [];
-            var lights = new THREE.Group();
 
             function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
                 new THREE.MTLLoader()
@@ -57,22 +55,15 @@
                 window.addEventListener('resize', onWindowResize, false);
 
                 var geometry = new THREE.PlaneGeometry(30, 30, 32);
-                var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+                var material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
                 plane.position.z = 15;
                 scene.add(plane);
 
-
-                var light = new THREE.PointLight(0xffffff, 2.5);
-                lights.add(light);
-                light.position.set(10, 4, 10);
-                var pointLightHelper = new THREE.PointLightHelper(light, 1, 0xff0000);
-                lights.add(pointLightHelper);
-                light2 = new THREE.AmbientLight(0x404040, 2);
-                lights.add(light2);
-                scene.add(lights);
+                var ambientLight = new THREE.AmbientLight(0xffffff);
+                scene.add(ambientLight);
             }
 
             function onWindowResize() {
@@ -85,12 +76,6 @@
                 requestAnimationFrame(animate);
                 cameraControls.update();
                 renderer.render(scene, camera);
-                lights.updateMatrix();
-                lights.updateMatrixWorld();
-                if (robots[0] != undefined) {
-                    robots[0].position.x += 0.1;
-                }
-                
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":5000" + "/connect_client");
@@ -102,15 +87,22 @@
                     if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                         if (command.parameters.type == "robot") {
                             var robot = new THREE.Group();
-                            console.log(robot1);
                             loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
                                 mesh.scale.set(0.05, 0.05, 0.05);
                                 robot.add(mesh);
-                                robot.material = new THREE.MeshPhongMaterial;
                                 models.add(robot);
                             });
                             worldObjects[command.parameters.guid] = robot;
-                            robots.push(robot);
+                        }
+                        if (command.parameters.type == "rack") {
+                            var rack = new THREE.Group();
+                            loadOBJModel("models/", "CatModel.obj", "textures/", "CatModel.mtl", (mesh) => {
+                                mesh.scale.set(0.005, 0.005, 0.005);
+                                mesh.rotation.set(Math.PI*1.5,0,0);
+                                rack.add(mesh);
+                                models.add(rack);
+                            });
+                            worldObjects[command.parameters.guid] = rack;
                         }
                     }
                     var object = worldObjects[command.parameters.guid];
@@ -124,8 +116,7 @@
                     object.rotation.z = command.parameters.rotationZ;
                 }
             }
-            console.log(worldObjects);
-            console.log(worldObjects[0]);
+
             init();
             animate();
         }
