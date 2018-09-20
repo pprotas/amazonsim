@@ -42,7 +42,7 @@ namespace Controllers {
 
         public void Simulate() {
             running = true;
-
+            
             while(running) {
                 w.Update(tickTime);
                 Thread.Sleep(tickTime);

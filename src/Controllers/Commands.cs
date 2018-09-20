@@ -36,8 +36,8 @@ namespace Controllers {
         }
     }
 
-    public class SendGraph : Command{
-        public SendGraph(Graph parameters) : base("graph", parameters) {            
+    public class SendPoint : Command{
+        public SendPoint(Point parameters) : base("point", parameters) {            
         }
     }
 }

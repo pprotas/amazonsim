@@ -5,11 +5,13 @@ using Newtonsoft.Json;
 
 namespace Models
 {
-    public class Graph {
-        List<Point> points = new List<Point>();
-
-        public Graph(List<Point> points){
-            this.points = points;
+    public class Graph
+    {
+        private List<Point> _points = new List<Point>();
+        public List<Point> points { get { return _points; } }
+        public Graph(List<Point> points)
+        {
+            _points = points;
         }
     }
 }
