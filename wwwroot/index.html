@@ -42,20 +42,58 @@
                     });
             }
 
-            function direction(current, desired){
-                if((desired - current) == 0){
+            function direction(current, desired) {
+                if ((desired - current) == 0) {
                     return 0;
                 }
-                else if((desired - current) < 0){
+                else if ((desired - current) < 0) {
                     return -0.1;
                 }
-                else if((desired - current) > 0){
+                else if ((desired - current) > 0) {
                     return 0.1;
                 }
             }
 
-            function round(number){
-                return Math.round( number * 10 ) / 10;
+            function round(number) {
+                return Math.round(number * 10) / 10;
+            }
+
+            function move(robot, point) {
+                if (robot.position.x != point.point.position.x) {
+                    robot.position.x += direction(robot.position.x, point.point.position.x);
+                    robot.position.x = round(robot.position.x);
+                }
+                if (robot.position.y != point.point.position.y) {
+                    robot.position.y += direction(robot.position.y, point.point.position.y);
+                    robot.position.y = round(robot.position.y);
+                }
+                if (robot.position.z != point.point.position.z) {
+                    robot.position.z += direction(robots[0].position.z, point.point.position.z);
+                    robot.position.z = round(robot.position.z);
+                }
+                // if (round(point.point.position.x - robot.position.x) == 0 && round(point.point.position.y - robot.position.y) == 0 && round(point.point.position.z - robot.position.z) == 0) {
+                //     robot.position.set(point.point.position.x, point.point.position.y, point.point.position.z);
+                //     console.log("x: " + robot.position.x + " y: " + robot.position.y + " z: " + robot.position.z);
+                // }
+                if(robot.position.x === point.point.position.x && robot.position.y === point.point.position.y && robot.position.z === point.point.position.z){
+                    robot.position.set(point.point.position.x, point.point.position.y, point.point.position.z);
+                }
+                console.log("Desired point: " + i + point.point.name);
+                console.log("x: " + robot.position.x + " y: " + robot.position.y + " z: " + robot.position.z);
+            }
+
+            function goThroughPoints(robot, pointList) {
+                if (robot !== undefined && pointList[i] !== undefined) {
+                    move(robot, pointList[i]);
+                    if (round(pointList[i].point.position.x - robot.position.x) == 0 && round(pointList[i].point.position.y - robot.position.y) == 0 && round(pointList[i].point.position.z - robot.position.z) == 0) {
+                        if (i === 9) {
+                            i = 0;
+                        }
+                        else {
+                            i++;
+                        }
+                    }
+                }
             }
 
             function init() {
@@ -78,8 +116,8 @@
                 var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
-                plane.position.x = 15;
-                plane.position.z = 15;
+                plane.position.x = 0;
+                plane.position.z = 0;
                 scene.add(plane);
 
 
@@ -105,29 +143,7 @@
                 renderer.render(scene, camera);
                 lights.updateMatrix();
                 lights.updateMatrixWorld();
-                if (robots[0] !== undefined && points[i] !== undefined) {
-                    if (robots[0].position.x != points[i].position.x) {
-                        robots[0].position.x += direction(robots[0].position.x, points[i].position.x);
-                    }
-                    if (robots[0].position.y != points[i].position.y) {
-                        robots[0].position.y += direction(robots[0].position.y, points[i].position.y);
-                    }
-                    if (robots[0].position.z != points[i].position.z) {
-                        robots[0].position.z += direction(robots[0].position.z, points[i].position.z);
-                    }
-                    console.log(robots[0]);
-                    console.log("x: " + direction(robots[0].position.x, points[i].position.x) + " y: " + direction(robots[0].position.y, points[i].position.y) + " z: " + direction(robots[0].position.z, points[i].position.z))
-                    if (round(points[i].position.x - robots[0].position.x) == 0 && round(points[i].position.y - robots[0].position.y) == 0 && round(points[i].position.z - robots[0].position.z) == 0) {
-                        robots[0].position.set(points[i].position.x, points[i].position.y, points[i].position.z);
-                        if (i === 2) {
-                            i = 0;
-                        }
-                        else{
-                            i++;
-                        }
-                    }
-                }
-
+                goThroughPoints(robots[0], points);
             }
 
             exampleSocket = new WebSocket("ws://" + window.location.hostname + ":5000" + "/connect_client");
@@ -139,7 +155,7 @@
                     point.position.x = command.parameters.x;
                     point.position.y = command.parameters.y;
                     point.position.z = command.parameters.z;
-                    points.push(point);
+                    points.push({ connection1: command.parameters.connection1, connection2: command.parameters.connection1, connection3: command.parameters.connection1, point });
                 }
                 else if (command.command == "update") {
                     var models = new THREE.Group();

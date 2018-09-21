@@ -12,17 +12,32 @@ namespace Models
         public Graph pointGraph;
         public World()
         {
-            Point a = new Point("a", 0, 0, 0);
-            Point b = new Point("b", 5, 0, 0);
-            Point c = new Point("c", 0, 0, 5);
-            a.AddConnection("b", "c");
-            b.AddConnection("a", "c");
-            c.AddConnection("a", "b");
+            Point a = new Point("a", -10, 0, 0);
+            Point b = new Point("b", -5, 0, 0);
+            Point c = new Point("c", -5, 0, 5);
+            Point d = new Point("d", 0, 0, 5);
+            Point e = new Point("e", 5, 0, 5);
+            Point f = new Point("f", 5, 0, 0);
+            Point g = new Point("g", 5, 0, -5);
+            Point h = new Point("h", 0, 0, -5);
+            Point i = new Point("i", -5, 0, -5);
+            Point j = new Point("j", 0, 0, 0);
 
-            List<Point> pointList = new List<Point>() { a, b, c };
+            a.AddConnection("b");
+            b.AddConnection("c", "i");
+            c.AddConnection("b", "d");
+            d.AddConnection("c", "e", "j");
+            e.AddConnection("d", "f");
+            f.AddConnection("e", "g");
+            g.AddConnection("f", "h");
+            h.AddConnection("g", "j"); 
+            i.AddConnection("h", "b");
+            j.AddConnection("d", "h");
+
+            List<Point> pointList = new List<Point>() { a, b, c, d, e, f, g, h, i, j };
             pointGraph = new Graph((pointList));
 
-            Robot r = CreateRobot(0, 0, 0);
+            Robot r = CreateRobot(-10, 0, 0);
             //r.Move(c.x, c.y, c.z);
             Robot r2 = CreateRobot(10, 0, 10);
 

@@ -10,6 +10,7 @@ namespace Models
         private string _name;
         private string _connection1;
         private string _connection2;
+        private string _connection3;
         private double _x;
         private double _y;
         private double _z;
@@ -18,6 +19,7 @@ namespace Models
         public string name { get { return _name; } }
         public string connection1 { get { return _connection1; } }
         public string connection2 { get { return _connection2; } }
+        public string connection3 { get { return _connection3; } }
         public double x { get { return _x; } }
         public double y { get { return _y; } }
         public double z { get { return _z; } }
@@ -36,15 +38,23 @@ namespace Models
             {
                 _connection1 = c;
             }
-            else
+            else if(_connection2 == null)
             {
                 _connection2 = c;
+            }
+            else{
+                _connection3 = c;
             }
         }
 
         public void AddConnection(string c1, string c2){
             _connection1 = c1;
             _connection2 = c2;
+        }
+        public void AddConnection(string c1, string c2, string c3){
+            _connection1 = c1;
+            _connection2 = c2;
+            _connection3 = c3;
         }
 
         // public void AddNode(Point node){
