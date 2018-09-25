@@ -7,25 +7,24 @@ namespace Models
 {
     public abstract class Model3D
     {
-        protected double _x = 0;
-        protected double _y = 0;
-        protected double _z = 0;
-        protected double _rX = 0;
-        protected double _rY = 0;
-        protected double _rZ = 0;
+        protected decimal _x = 0;
+        protected decimal _y = 0;
+        protected decimal _z = 0;
+        protected decimal _rX = 0;
+        protected decimal _rY = 0;
+        protected decimal _rZ = 0;
 
         public string type;
         public Guid guid;
-        public double x { get { return _x; } }
-        public double y { get { return _y; } }
-        public double z { get { return _z; } }
-        public double rotationX { get { return _rX; } }
-        public double rotationY { get { return _rY; } }
-        public double rotationZ { get { return _rZ; } }
-
+        public decimal x { get { return _x; } }
+        public decimal y { get { return _y; } }
+        public decimal z { get { return _z; } }
+        public decimal rotationX { get { return _rX; } }
+        public decimal rotationY { get { return _rY; } }
+        public decimal rotationZ { get { return _rZ; } }
         public bool needsUpdate = true;
 
-        public virtual void Move(double x, double y, double z)
+        public virtual void Move(decimal x, decimal y, decimal z)
         {
             this._x = x;
             this._y = y;
@@ -34,7 +33,7 @@ namespace Models
             needsUpdate = true;
         }
 
-        public virtual void Rotate(double rotationX, double rotationY, double rotationZ)
+        public virtual void Rotate(decimal rotationX, decimal rotationY, decimal rotationZ)
         {
             this._rX = rotationX;
             this._rY = rotationY;

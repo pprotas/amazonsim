@@ -18,8 +18,12 @@ namespace Controllers {
 
         public string ToJson() {
             return JsonConvert.SerializeObject(new {
+                
                 command = type,
                 parameters = parameters
+            }, 
+            new JsonSerializerSettings{
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             });
         }
     }
@@ -33,11 +37,6 @@ namespace Controllers {
     public class UpdateModel3DCommand : Model3DCommand {
         
         public UpdateModel3DCommand(Model3D parameters) : base("update", parameters) {
-        }
-    }
-
-    public class SendPoint : Command{
-        public SendPoint(Point parameters) : base("point", parameters) {            
         }
     }
 }

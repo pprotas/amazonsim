@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Models {
     public class Rack : Model3D, IUpdatable {
-        public Rack(double x, double y, double z, double rotationX, double rotationY, double rotationZ) {
+        public Rack(decimal x, decimal y, decimal z, decimal rotationX, decimal rotationY, decimal rotationZ) {
             this.type = "rack";
             this.guid = Guid.NewGuid();
 

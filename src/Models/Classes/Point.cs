@@ -7,68 +7,49 @@ namespace Models
 {
     public class Point
     {
-        private string _name;
-        private string _connection1;
-        private string _connection2;
-        private string _connection3;
-        private double _x;
-        private double _y;
-        private double _z;
-        //private List<Point> nodes = new List<Point>();
+        private decimal _x;
+        private decimal _y;
+        private decimal _z;
+        private List<Point> _nodes = new List<Point>();
+        private decimal _cost;
+        private Point _path;
 
-        public string name { get { return _name; } }
-        public string connection1 { get { return _connection1; } }
-        public string connection2 { get { return _connection2; } }
-        public string connection3 { get { return _connection3; } }
-        public double x { get { return _x; } }
-        public double y { get { return _y; } }
-        public double z { get { return _z; } }
+        public List<Point> nodes { get { return _nodes; } }
+        public decimal cost { get { return _cost; } }
+        public Point path { get { return _path; } }
+        public decimal x { get { return _x; } }
+        public decimal y { get { return _y; } }
+        public decimal z { get { return _z; } }
 
-        public Point(string name, double x, double y, double z)
+        public Point(decimal x, decimal y, decimal z)
         {
-            this._name = name;
             this._x = x;
             this._y = y;
             this._z = z;
         }
 
-        public void AddConnection(string c)
+        public void AddNode(Point node)
         {
-            if (_connection1 == null)
+            if (!nodes.Contains(node))
             {
-                _connection1 = c;
+                _nodes.Add(node);
+                node.AddNode(this);
             }
-            else if(_connection2 == null)
+        }
+
+        public void AddNode(List<Point> nodeList)
+        {
+            foreach (Point node in nodeList)
             {
-                _connection2 = c;
-            }
-            else{
-                _connection3 = c;
+                this.AddNode(node);
             }
         }
 
-        public void AddConnection(string c1, string c2){
-            _connection1 = c1;
-            _connection2 = c2;
+        public void SetCost(decimal cost){
+            this._cost = cost;
         }
-        public void AddConnection(string c1, string c2, string c3){
-            _connection1 = c1;
-            _connection2 = c2;
-            _connection3 = c3;
+        public void SetPath(Point path){
+            this._path = path;
         }
-
-        // public void AddNode(Point node){
-        //     if(!nodes.Contains(node)){
-        //         nodes.Add(node);
-        //         node.AddNode(this);                            
-        //     }
-        // }
-
-        // public void AddNode(List<Point> nodeList){
-        //     foreach(Point node in nodeList){
-        //         this.AddNode(node);
-        //     }
-        // }
-
     }
 }
