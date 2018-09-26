@@ -36,7 +36,8 @@ namespace Models
             pointGraph = new Graph((pointList));
 
             Robot r = CreateRobot(a);
-            r.AssignPoint(e);
+            r.AddTask(new RobotMove(pointGraph, e));
+            r.AddTask(new RobotMove(pointGraph, a));
             Robot r2 = CreateRobot(10, 0, 10);
 
             Rack p = CreateRack(5, 0, 5);
@@ -90,7 +91,6 @@ namespace Models
             }
         }
 
-        List<Point> route = new List<Point>();
         public bool Update(int tick)
         {
             for (int i = 0; i < worldObjects.Count; i++)
@@ -103,165 +103,11 @@ namespace Models
 
                     if (needsCommand)
                     {
-                        if (u is Robot)
-                        {
-                            if (((Robot)u).desiredPoint != null)
-                            {
-                                route = Dijkstra(pointGraph, ((Robot)u).currentPoint, ((Robot)u).desiredPoint);
-                                if (IsOnPoint(((Robot)u), route[1]))
-                                {
-                                    ((Robot)u).CurrentPoint(route[1]);
-                                    route = Dijkstra(pointGraph, ((Robot)u).currentPoint, ((Robot)u).desiredPoint);
-                                }
-                                Move(((Robot)u), route[1]);     
-                            }
-                        }
+                        SendCommandToObservers(new UpdateModel3DCommand(u));
                     }
-                    SendCommandToObservers(new UpdateModel3DCommand(u));
                 }
             }
-
-
             return true;
-        }
-
-        public void Move(Robot robot, Point point)
-        {
-            if (robot.x < point.x)
-            {
-                robot.Move(robot.x + 0.1m, robot.y, robot.z);
-            }
-            else if (robot.x > point.x)
-            {
-                robot.Move(robot.x - 0.1m, robot.y, robot.z);
-            }
-            
-            if (robot.z < point.z)
-            {
-                robot.Move(robot.x, robot.y, robot.z + 0.1m);
-            }
-            else if (robot.z > point.z)
-            {
-                robot.Move(robot.x, robot.y, robot.z - 0.1m);
-            }
-        }
-
-        public bool IsOnPoint(Robot robot, Point point)
-        {
-            if (robot.x == point.x)
-            {
-                if (robot.y == point.y)
-                {
-                    if (robot.z == point.z)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public List<Point> Dijkstra(Graph pointList, Point startPoint, Point endPoint)
-        {
-            List<Point> unvisited = new List<Point>();
-            List<Point> visited = new List<Point>();
-            List<Point> result = new List<Point>();
-
-            unvisited.Add(startPoint);
-            foreach (Point p in pointList.points)
-            {
-                if (p == startPoint)
-                {
-
-                }
-                else if (p == endPoint)
-                {
-
-                }
-                else
-                {
-                    unvisited.Add(p);
-                    p.SetCost(decimal.MaxValue);
-                }
-            }
-            endPoint.SetCost(decimal.MaxValue);
-            unvisited.Add(endPoint);
-
-            unvisited[0].SetCost(0);
-            unvisited[0].SetPath(startPoint);
-
-            Point current = null;
-            while (unvisited.Any())
-            {
-                current = unvisited[0];
-
-                visited.Add(current);
-                unvisited.Remove(current);
-
-
-                foreach (Point p in current.nodes)
-                {
-                    double tempDistance = Math.Sqrt(Math.Pow(Convert.ToDouble((current.x - p.x)), 2) + Math.Pow(Convert.ToDouble((current.z - p.z)), 2));
-                    decimal distance = Convert.ToDecimal(tempDistance);
-                    if (distance + current.cost < p.cost)
-                    {
-                        p.SetCost(current.cost + distance);
-                        p.SetPath(current);
-                    }
-                }
-
-                Point shortest = null;
-                foreach (Point p in unvisited)
-                {
-                    if (shortest == null)
-                    {
-                        shortest = p;
-                    }
-                    if (shortest.cost > p.cost && !visited.Contains(p))
-                    {
-                        shortest = p;
-                    }
-                }
-
-                foreach (Point p in unvisited.ToList())
-                {
-                    if (p == shortest)
-                    {
-                        unvisited.Remove(p);
-                        unvisited.Insert(0, p);
-                    }
-                }
-            }
-
-            foreach (Point p in visited)
-            {
-                if (p == endPoint)
-                {
-                    result.Add(p);
-                }
-            }
-            while (result[0] != startPoint)
-            {
-                foreach (Point p in visited)
-                {
-                    if (p == result[0].path)
-                    {
-                        result.Insert(0, p);
-                    }
-                }
-            }
-
-            return result;
         }
     }
 
