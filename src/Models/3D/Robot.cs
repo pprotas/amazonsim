@@ -13,8 +13,8 @@ namespace Models
         public Point currentPoint { get { return _currentPoint; } }
         private List<Point> route = new List<Point>();
         private List<RobotTask> tasks = new List<RobotTask>();
-
-        private Rack rack;
+        private Rack _rack;
+        public Rack rack { get { return _rack; } }
         public Robot(decimal x, decimal y, decimal z, decimal rotationX, decimal rotationY, decimal rotationZ)
         {
             this.type = "robot";
@@ -27,8 +27,8 @@ namespace Models
             this._rX = rotationX;
             this._rY = rotationY;
             this._rZ = rotationZ;
-            
-            this.rack = null;
+
+            this._rack = null;
         }
 
         public Robot(Point point)
@@ -44,7 +44,7 @@ namespace Models
             this._desiredPoint = _currentPoint;
             route.Add(_currentPoint);
 
-            this.rack = null;
+            this._rack = null;
         }
 
         public void AddTask(RobotTask task)
@@ -126,9 +126,19 @@ namespace Models
             _currentPoint = point;
         }
 
+        public void AssignRack(Rack rack)
+        {
+            if (rack.point == this.currentPoint)
+            {
+                this._rack = rack;
+                _rack.Move(this._x, this._y + 1, this._z);
+                needsUpdate = true;
+            }
+        }
+
         public override bool Update(int tick)
         {
-            if (tasks.Any())
+            if (tasks != null && tasks.Any())
             {
                 if (tasks.First().TaskComplete(this))
                 {
@@ -147,6 +157,10 @@ namespace Models
             if (route.Count > 1)
             {
                 this.Move(route[1]);
+                if (this.rack != null)
+                {
+                    _rack.Move(this._x, this._y + 1, this._z);
+                }
             }
             return base.Update(tick);
         }

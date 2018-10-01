@@ -37,10 +37,11 @@ namespace Models
 
             Robot r = CreateRobot(a);
             r.AddTask(new RobotMove(pointGraph, e));
+            r.AddTask(new RobotPickUp());
             r.AddTask(new RobotMove(pointGraph, a));
             Robot r2 = CreateRobot(10, 0, 10);
 
-            Rack p = CreateRack(5, 0, 5);
+            Rack p = CreateRack(e);
         }
 
         private Robot CreateRobot(decimal x, decimal y, decimal z)
@@ -60,6 +61,13 @@ namespace Models
         private Rack CreateRack(decimal x, decimal y, decimal z)
         {
             Rack r = new Rack(x, y, z, 0, 0, 0);
+            worldObjects.Add(r);
+            return r;
+        }
+
+        private Rack CreateRack(Point p)
+        {
+            Rack r = new Rack(p);
             worldObjects.Add(r);
             return r;
         }

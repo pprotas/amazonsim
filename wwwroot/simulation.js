@@ -1,6 +1,20 @@
-
 function parseCommand(input = "") {
     return JSON.parse(input);
+}
+
+function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
+    new THREE.MTLLoader()
+        .setPath(texturePath)
+        .load(textureName, function (materials) {
+            materials.preload();
+
+            new THREE.OBJLoader()
+                .setPath(modelPath)
+                .setMaterials(materials)
+                .load(modelName, function (object) {
+                    onload(object);
+                }, function () { }, function (e) { console.log("Error loading model"); console.log(e); });
+        });
 }
 
 var exampleSocket;
@@ -11,22 +25,7 @@ window.onload = function () {
     var worldObjects = {};
     var robots = [];
     var lights = new THREE.Group();
-
-    function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
-        new THREE.MTLLoader()
-            .setPath(texturePath)
-            .load(textureName, function (materials) {
-                materials.preload();
-
-                new THREE.OBJLoader()
-                    .setPath(modelPath)
-                    .setMaterials(materials)
-                    .load(modelName, function (object) {
-                        onload(object);
-                    }, function () { }, function (e) { console.log("Error loading model"); console.log(e); });
-            });
-    }
-
+    
     function init() {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
         cameraControls = new THREE.OrbitControls(camera);

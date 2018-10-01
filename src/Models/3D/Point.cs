@@ -13,6 +13,7 @@ namespace Models
         private List<Point> _nodes = new List<Point>();
         private decimal _cost;
         private Point _path;
+        private Rack _rack;
 
         public List<Point> nodes { get { return _nodes; } }
         public decimal cost { get { return _cost; } }
@@ -20,6 +21,7 @@ namespace Models
         public decimal x { get { return _x; } }
         public decimal y { get { return _y; } }
         public decimal z { get { return _z; } }
+        public Rack rack { get { return _rack; } }
 
         public Point(decimal x, decimal y, decimal z)
         {
@@ -45,10 +47,15 @@ namespace Models
             }
         }
 
-        public void SetCost(decimal cost){
+        public void AddRack(Rack rack){
+            this._rack = rack;
+        }
+        public void SetCost(decimal cost)
+        {
             this._cost = cost;
         }
-        public void SetPath(Point path){
+        public void SetPath(Point path)
+        {
             this._path = path;
         }
     }
