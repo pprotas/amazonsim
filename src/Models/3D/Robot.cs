@@ -13,6 +13,8 @@ namespace Models
         public Point currentPoint { get { return _currentPoint; } }
         private List<Point> route = new List<Point>();
         private List<RobotTask> tasks = new List<RobotTask>();
+
+        private Rack rack;
         public Robot(decimal x, decimal y, decimal z, decimal rotationX, decimal rotationY, decimal rotationZ)
         {
             this.type = "robot";
@@ -25,6 +27,8 @@ namespace Models
             this._rX = rotationX;
             this._rY = rotationY;
             this._rZ = rotationZ;
+            
+            this.rack = null;
         }
 
         public Robot(Point point)
@@ -39,6 +43,8 @@ namespace Models
             _currentPoint = point;
             this._desiredPoint = _currentPoint;
             route.Add(_currentPoint);
+
+            this.rack = null;
         }
 
         public void AddTask(RobotTask task)
