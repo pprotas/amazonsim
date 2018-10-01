@@ -66,7 +66,6 @@ namespace Models
                     route.RemoveAt(0);
                 }
             }
-
         }
 
         public void Move(Point point)
@@ -130,10 +129,24 @@ namespace Models
         {
             if (rack.point == this.currentPoint)
             {
+                rack.AssignPoint(null);
                 this._rack = rack;
                 _rack.Move(this._x, this._y + 1, this._z);
                 needsUpdate = true;
             }
+        }
+
+        public void RemoveRack(Truck truck)
+        {
+            truck.AddRack(this.rack);
+            this._rack = null;
+        }
+
+        public void RemoveRack(Point point)
+        {
+            point.AddRack(this.rack);
+            this._rack.AssignPoint(point);
+            this._rack = null;
         }
 
         public override bool Update(int tick)

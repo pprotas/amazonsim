@@ -35,5 +35,9 @@ namespace Models
             this._point = point;
             point.AddRack(this);
         }
+
+        public void AssignPoint(Point point){
+            this._point = point;
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Models
         private List<Model3D> worldObjects = new List<Model3D>();
         private List<IObserver<Command>> observers = new List<IObserver<Command>>();
         private Graph pointGraph;
+        private Graph truckGraph;
 
         public World()
         {
@@ -24,6 +25,10 @@ namespace Models
             Point i = new Point(-5, 0, -5);
             Point j = new Point(0, 0, 0);
 
+            Point tA = new Point(-10, 0, -50);
+            Point tB = new Point(-10, 0, 0);
+            Point tC = new Point(-10, 0, 50);
+
             a.AddNode(b);
             b.AddNode(new List<Point>() { c, i });
             c.AddNode(d);
@@ -32,16 +37,50 @@ namespace Models
             f.AddNode(g);
             h.AddNode(new List<Point>() { i, j, g });
 
+            tB.AddNode(new List<Point>() { tA, tB });
+
             List<Point> pointList = new List<Point>() { a, b, c, d, e, f, g, h, i, j };
             pointGraph = new Graph((pointList));
 
-            Robot r = CreateRobot(a);
-            r.AddTask(new RobotMove(pointGraph, e));
-            r.AddTask(new RobotPickUp());
-            r.AddTask(new RobotMove(pointGraph, a));
-            Robot r2 = CreateRobot(10, 0, 10);
+            truckGraph = new Graph(new List<Point>() { tA, tB, tC });
 
-            Rack p = CreateRack(e);
+            Robot robot1 = CreateRobot(a);
+            Robot robot2 = CreateRobot(a);
+            Robot robot3 = CreateRobot(a);
+
+            Rack rack1 = CreateRack(e);
+            Rack rack2 = CreateRack(i);
+            Rack rack3 = CreateRack(j);
+
+            Truck t = CreateTruck(tA);
+
+            robot1.AddTask(new RobotMove(pointGraph, rack1.point));
+            robot2.AddTask(new RobotMove(pointGraph, rack2.point));
+            robot3.AddTask(new RobotMove(pointGraph, rack3.point));
+
+            int counter = 3;
+
+            foreach (Model3D r in worldObjects)
+            {
+                if (r is Robot)
+                {
+                    ((Robot)r).AddTask(new RobotPickUp());
+                    ((Robot)r).AddTask(new RobotMove(pointGraph, a));
+                    ((Robot)r).AddTask(new RobotDropOff(t));
+                    ((Robot)r).AddTask(new RobotPickUp());
+                    ((Robot)r).AddTask(new RobotMove(pointGraph, pointList[counter]));
+                    ((Robot)r).AddTask(new RobotDropOff(pointList[counter]));
+                    counter++;
+                    ((Robot)r).AddTask(new RobotMove(pointGraph, a));
+                }
+            }
+            t.AddTask(new TruckMove(tB));
+            t.AddTask(new TruckLoad());
+            t.AddTask(new TruckMove(tC));
+            t.AddTask(new TruckTeleport(tA));
+            t.AddTask(new TruckMove(tB));
+            t.AddTask(new TruckDump(a));
+            t.AddTask(new TruckMove(tC));
         }
 
         private Robot CreateRobot(decimal x, decimal y, decimal z)
@@ -51,9 +90,9 @@ namespace Models
             return r;
         }
 
-        private Robot CreateRobot(Point point)
+        private Robot CreateRobot(Point p)
         {
-            Robot r = new Robot(point);
+            Robot r = new Robot(p);
             worldObjects.Add(r);
             return r;
         }
@@ -72,6 +111,12 @@ namespace Models
             return r;
         }
 
+        private Truck CreateTruck(Point p)
+        {
+            Truck r = new Truck(p);
+            worldObjects.Add(r);
+            return r;
+        }
         public IDisposable Subscribe(IObserver<Command> observer)
         {
             if (!observers.Contains(observer))

@@ -93,7 +93,7 @@ window.onload = function () {
                     worldObjects[command.parameters.guid] = robot;
                     robots.push(worldObjects[command.parameters.guid]);
                 }
-                if (command.parameters.type == "rack") {
+                else if (command.parameters.type == "rack") {
                     var rack = new THREE.Group();
                     loadOBJModel("models/", "CatModel.obj", "textures/", "CatModel.mtl", (mesh) => {
                         mesh.scale.set(0.005, 0.005, 0.005);
@@ -102,6 +102,15 @@ window.onload = function () {
                         models.add(rack);
                     });
                     worldObjects[command.parameters.guid] = rack;
+                }
+                else if (command.parameters.type == "truck") {
+                    var truck = new THREE.Group();
+                    loadOBJModel("models/", "Van.obj", "textures/", "Van.mtl", (mesh) => {
+                        mesh.scale.set(0.1, 0.1, 0.1);
+                        truck.add(mesh);
+                        models.add(truck);
+                    });
+                    worldObjects[command.parameters.guid] = truck;
                 }
             }
             var object = worldObjects[command.parameters.guid];

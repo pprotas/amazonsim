@@ -47,7 +47,12 @@ namespace Models
             }
         }
 
-        public void AddRack(Rack rack){
+        public void AddRack(Rack rack)
+        {
+            if (rack != null)
+            {
+                rack.AssignPoint(this);
+            }
             this._rack = rack;
         }
         public void SetCost(decimal cost)
