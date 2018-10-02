@@ -27,7 +27,7 @@ window.onload = function () {
     var lights = new THREE.Group();
     
     function init() {
-        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
         cameraControls = new THREE.OrbitControls(camera);
         camera.position.z = 15;
         camera.position.y = 5;
@@ -50,6 +50,10 @@ window.onload = function () {
         plane.position.z = 0;
         scene.add(plane);
 
+        var skyboxGeometry = new THREE.SphereGeometry(1000, 32, 32);
+        var skyboxMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/SkyBox.jpg"), side: THREE.DoubleSide });
+        var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
+        scene.add(skybox);
 
         var light = new THREE.PointLight(0xffffff, 2.5);
         lights.add(light);
@@ -83,13 +87,16 @@ window.onload = function () {
             scene.add(models);
             if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                 if (command.parameters.type == "robot") {
-                    var robot = new THREE.Group();
-                    loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
+                    var robot = new Robot();
+                    /*loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
                         mesh.scale.set(0.05, 0.05, 0.05);
                         robot.add(mesh);
                         robot.material = new THREE.MeshPhongMaterial;
                         models.add(robot);
-                    });
+                    });*/
+                    console.log(robot.loadState);
+                    robot.material = new THREE.MeshPhongMaterial;
+                    models.add(robot);
                     worldObjects[command.parameters.guid] = robot;
                     robots.push(worldObjects[command.parameters.guid]);
                 }
