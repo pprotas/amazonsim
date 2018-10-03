@@ -45,20 +45,6 @@ function addPointLight(object, color, x, y, z, intensity, distance) {
     light.position.set(x, y, z);
     object.add(light);
     var pointLightHelper2 = new THREE.PointLightHelper(light, 1, 0xff0000);
+    pointLightHelper2.position.set(x, y, z);
     object.add(pointLightHelper2);
-}
-
-function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
-    new THREE.MTLLoader()
-        .setPath(texturePath)
-        .load(textureName, function (materials) {
-            materials.preload();
-
-            new THREE.OBJLoader()
-                .setPath(modelPath)
-                .setMaterials(materials)
-                .load(modelName, function (object) {
-                    onload(object);
-                }, function () { }, function (e) { console.log("Error loading model"); console.log(e); });
-        });
 }

@@ -12,7 +12,23 @@
     <script src="OrbitControls.js"></script>
     <script src="MTLLoader.js"></script>
     <script src="OBJLoader.js"></script>
+    <script src="Van.js"></script>
     <script src="Robot.js"></script>
+    <script id="rackVertexShader" type="x-shader/x-vertex">
+        uniform float rotationY;
+
+        varying vec2 vUv;
+        varying mat4 vPosition;
+
+        void main() {
+            vUv = uv;
+
+            mat4 rYPos = mat4(vec4(cos(rotationY),0,0,sin(rotationY),0,0)),
+                            vec4(0.0,1.0,0.0,0.0),
+                            vec4(-sin(rotationY),0.0,cos(rotationY),0.0),
+                            vec4(0.0,0.0,0.0,1.0);
+        }
+    </script>
 </body>
 
 </html>

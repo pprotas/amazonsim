@@ -63,6 +63,13 @@ window.onload = function () {
         light2 = new THREE.AmbientLight(0x404040, 2);
         lights.add(light2);
         scene.add(lights);
+
+        var material = new THREE.ShaderMaterial( {
+            uniforms: {
+                time: { value: 1.0 },
+            },
+            vertexShader: document.getElementById( 'rackVertexShader' ).textContent
+        })
     }
 
     function onWindowResize() {
@@ -94,11 +101,10 @@ window.onload = function () {
                         robot.material = new THREE.MeshPhongMaterial;
                         models.add(robot);
                     });*/
-                    console.log(robot.loadState);
-                    robot.material = new THREE.MeshPhongMaterial;
+                    
                     models.add(robot);
                     worldObjects[command.parameters.guid] = robot;
-                    robots.push(worldObjects[command.parameters.guid]);
+                    //robots.push(worldObjects[command.parameters.guid]);
                 }
                 else if (command.parameters.type == "rack") {
                     var rack = new THREE.Group();
@@ -111,12 +117,13 @@ window.onload = function () {
                     worldObjects[command.parameters.guid] = rack;
                 }
                 else if (command.parameters.type == "truck") {
-                    var truck = new THREE.Group();
-                    loadOBJModel("models/", "Van.obj", "textures/", "Van.mtl", (mesh) => {
+                    var truck = new Van();
+                    /*loadOBJModel("models/", "Van.obj", "textures/", "Van.mtl", (mesh) => {
                         mesh.scale.set(0.1, 0.1, 0.1);
                         truck.add(mesh);
                         models.add(truck);
-                    });
+                    });*/
+                    models.add(truck);
                     worldObjects[command.parameters.guid] = truck;
                 }
             }
