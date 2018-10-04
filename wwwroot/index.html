@@ -29,6 +29,19 @@
                             vec4(0.0,0.0,0.0,1.0);
         }
     </script>
+    <script id="rackFragmentShader" type="x-shader/x-fragment">
+        uniform float time;
+        varying vec2 vUv;
+
+        void main()
+        {
+            float red = abs(sin(time / 5.0));
+            float green = abs(sin(time / 4.0));
+            float blue = abs(sin(time / 3.0));
+
+            gl_FragColor = vec4(red, green, blue, 1.0);
+        }
+    </script>
 </body>
 
 </html>

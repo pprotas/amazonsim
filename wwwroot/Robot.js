@@ -9,6 +9,9 @@ const LoadStates =
 
 class Robot extends THREE.Group {
 
+    /**
+     * Constructor voor het aanmaken van een Robot
+     */
     constructor() {
         super();
 
@@ -17,10 +20,16 @@ class Robot extends THREE.Group {
         this.init();
     }
 
+    /**
+     * Geeft de loadstate van de Robot terug
+     */
     get loadState() {
         return this._loadState;
     }
 
+    /**
+     * Voegt textures en pointlights toe aan de Robot
+     */
     init() {
          if(this._loadState != LoadStates.NOT_LOADING){
              return;
@@ -33,18 +42,25 @@ class Robot extends THREE.Group {
             mesh.scale.set(0.05, 0.05, 0.05);
             selfRef.add(mesh);
 
-            addPointLight(selfRef, 0xff4751, 0, 0.75, 0, 1, 1);
+            addPointLight(selfRef, 0xff4751, 0, 0.75, 0, 2, 7);
 
             selfRef._loadState = LoadStates.LOADED;
         });
     }
 }
 
+/**
+ * Maakt een pointlight aan
+ * @param {*} object 
+ * @param {*} color 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} z 
+ * @param {*} intensity 
+ * @param {*} distance 
+ */
 function addPointLight(object, color, x, y, z, intensity, distance) {
     var light = new THREE.PointLight(color, intensity, distance);
     light.position.set(x, y, z);
     object.add(light);
-    var pointLightHelper2 = new THREE.PointLightHelper(light, 1, 0xff0000);
-    pointLightHelper2.position.set(x, y, z);
-    object.add(pointLightHelper2);
 }

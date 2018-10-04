@@ -18,6 +18,7 @@ function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
 }
 
 var exampleSocket;
+var shaderMaterial;
 
 window.onload = function () {
     var camera, scene, renderer;
@@ -64,12 +65,13 @@ window.onload = function () {
         lights.add(light2);
         scene.add(lights);
 
-        var material = new THREE.ShaderMaterial( {
+        shaderMaterial = new THREE.ShaderMaterial( {
             uniforms: {
                 time: { value: 1.0 },
             },
-            vertexShader: document.getElementById( 'rackVertexShader' ).textContent
-        })
+            vertexShader: document.getElementById( 'rackVertexShader' ).textContent,
+            fragmentShader: document.getElementById( 'rackFragmentShader' ).textContent
+        });
     }
 
     function onWindowResize() {
@@ -94,14 +96,7 @@ window.onload = function () {
             scene.add(models);
             if (Object.keys(worldObjects).indexOf(command.parameters.guid) < 0) {
                 if (command.parameters.type == "robot") {
-                    var robot = new Robot();
-                    /*loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
-                        mesh.scale.set(0.05, 0.05, 0.05);
-                        robot.add(mesh);
-                        robot.material = new THREE.MeshPhongMaterial;
-                        models.add(robot);
-                    });*/
-                    
+                    var robot = new Robot();                    
                     models.add(robot);
                     worldObjects[command.parameters.guid] = robot;
                     //robots.push(worldObjects[command.parameters.guid]);
@@ -112,17 +107,13 @@ window.onload = function () {
                         mesh.scale.set(0.005, 0.005, 0.005);
                         mesh.rotation.set(Math.PI * 1.5, 0, 0);
                         rack.add(mesh);
+                        rack.material = shaderMaterial;
                         models.add(rack);
                     });
                     worldObjects[command.parameters.guid] = rack;
                 }
                 else if (command.parameters.type == "truck") {
                     var truck = new Van();
-                    /*loadOBJModel("models/", "Van.obj", "textures/", "Van.mtl", (mesh) => {
-                        mesh.scale.set(0.1, 0.1, 0.1);
-                        truck.add(mesh);
-                        models.add(truck);
-                    });*/
                     models.add(truck);
                     worldObjects[command.parameters.guid] = truck;
                 }
