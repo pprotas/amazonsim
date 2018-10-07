@@ -12,22 +12,23 @@ namespace Models
         private Graph pointGraph;
         private Graph truckGraph;
 
+        // Hier worden de graph, de truck, de robots en de rekjes neergezet 
         public World()
         {
-            Point a = new Point(-10, 0, 0);
-            Point b = new Point(-5, 0, 0);
-            Point c = new Point(-5, 0, 5);
-            Point d = new Point(0, 0, 5);
-            Point e = new Point(5, 0, 5);
-            Point f = new Point(5, 0, 0);
-            Point g = new Point(5, 0, -5);
-            Point h = new Point(0, 0, -5);
-            Point i = new Point(-5, 0, -5);
+            Point a = new Point(-20, 0, 0);
+            Point b = new Point(-10, 0, 0);
+            Point c = new Point(-10, 0, 10);
+            Point d = new Point(0, 0, 10);
+            Point e = new Point(10, 0, 10);
+            Point f = new Point(10, 0, 0);
+            Point g = new Point(10, 0, -10);
+            Point h = new Point(0, 0, -10);
+            Point i = new Point(-10, 0, -10);
             Point j = new Point(0, 0, 0);
 
-            Point tA = new Point(-10, 0, -50);
-            Point tB = new Point(-10, 0, 0);
-            Point tC = new Point(-10, 0, 50);
+            Point tA = new Point(-20, 0, -50);
+            Point tB = new Point(-20, 0, 0);
+            Point tC = new Point(-20, 0, 50);
 
             a.AddNode(b);
             b.AddNode(new List<Point>() { c, i });
@@ -51,6 +52,9 @@ namespace Models
             Rack rack1 = CreateRack(e);
             Rack rack2 = CreateRack(i);
             Rack rack3 = CreateRack(j);
+            Rack rack4 = CreateRack(g);
+            Rack rack5 = CreateRack(b);
+            Rack rack6 = CreateRack(c);
 
             Truck t = CreateTruck(tA);
 
@@ -89,7 +93,8 @@ namespace Models
             worldObjects.Add(r);
             return r;
         }
-
+        
+        //Zet een robot op een punt neer
         private Robot CreateRobot(Point p)
         {
             Robot r = new Robot(p);

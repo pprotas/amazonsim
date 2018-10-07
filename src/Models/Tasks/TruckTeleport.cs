@@ -14,6 +14,7 @@ namespace Models
 
         public bool TaskComplete(Truck t)
         {
+            // Teleporteert de truck even snel weer naar een gekozen punt
             return t.x == point.x && t.y == point.y && t.z == point.z;
         }
     }

@@ -14,6 +14,8 @@ namespace Models
             if(t.racks.Any() && t.loadable){
                 t.SwitchLoadable();
             }
+
+            //De truck gaat weg als er 3 rekjes in de truck zitten
             return t.racks.Count == 3;
         }
     }

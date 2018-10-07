@@ -2,6 +2,14 @@ function parseCommand(input = "") {
     return JSON.parse(input);
 }
 
+/**
+ * 
+ * @param {*} modelPath Path naar de model folder
+ * @param {*} modelName Model bestandsnaam
+ * @param {*} texturePath Path naar de textures folder
+ * @param {*} textureName Texture bestandsnaam
+ * @param {*} onload 
+ */
 function loadOBJModel(modelPath, modelName, texturePath, textureName, onload) {
     new THREE.MTLLoader()
         .setPath(texturePath)
@@ -24,8 +32,6 @@ window.onload = function () {
     var camera, scene, renderer;
     var cameraControls;
     var worldObjects = {};
-    var robots = [];
-    var lights = new THREE.Group();
     
     function init() {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1500);
@@ -43,28 +49,29 @@ window.onload = function () {
 
         window.addEventListener('resize', onWindowResize, false);
 
-        var geometry = new THREE.PlaneGeometry(30, 30, 32);
+        var geometry = new THREE.PlaneGeometry(300, 300, 32);
         var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
         var plane = new THREE.Mesh(geometry, material);
+        plane.receiveShadow = true;
         plane.rotation.x = Math.PI / 2.0;
         plane.position.x = 0;
         plane.position.z = 0;
         scene.add(plane);
 
+        // De bolvormige skybox
         var skyboxGeometry = new THREE.SphereGeometry(1000, 32, 32);
         var skyboxMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/SkyBox.jpg"), side: THREE.DoubleSide });
         var skybox = new THREE.Mesh(skyboxGeometry, skyboxMaterial);
         scene.add(skybox);
 
-        var light = new THREE.PointLight(0xffffff, 2.5);
-        lights.add(light);
-        light.position.set(10, 4, 10);
-        var pointLightHelper = new THREE.PointLightHelper(light, 1, 0xff0000);
-        lights.add(pointLightHelper);
-        light2 = new THREE.AmbientLight(0x404040, 2);
-        lights.add(light2);
-        scene.add(lights);
+        // Directonal light
+        var light = new THREE.DirectionalLight(0xffffff, 1.5);
+        light.position.set(20,20,20);
+        light.castShadow = true;
+        scene.add(light);
 
+
+        // Custom shaders voor de rekjes
         shaderMaterial = new THREE.ShaderMaterial( {
             uniforms: {
                 time: { value: 1.0 },
@@ -84,6 +91,7 @@ window.onload = function () {
         requestAnimationFrame(animate);
         cameraControls.update();
         renderer.render(scene, camera);
+        //De lichten worden elke frame geupdate
         lights.updateMatrix();
         lights.updateMatrixWorld();
     }
@@ -99,12 +107,12 @@ window.onload = function () {
                     var robot = new Robot();                    
                     models.add(robot);
                     worldObjects[command.parameters.guid] = robot;
-                    //robots.push(worldObjects[command.parameters.guid]);
                 }
                 else if (command.parameters.type == "rack") {
                     var rack = new THREE.Group();
                     loadOBJModel("models/", "CatModel.obj", "textures/", "CatModel.mtl", (mesh) => {
                         mesh.scale.set(0.005, 0.005, 0.005);
+                        mesh.castShadow = true;
                         mesh.rotation.set(Math.PI * 1.5, 0, 0);
                         rack.add(mesh);
                         rack.material = shaderMaterial;

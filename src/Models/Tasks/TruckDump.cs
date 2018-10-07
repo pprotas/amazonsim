@@ -19,6 +19,7 @@ namespace Models
 
         public bool TaskComplete(Truck t)
         {
+            // "Dumpt" de rekjes naar een gewenst punt todat de truck 0 rekjes bevat
             return !t.racks.Any();
         }
     }

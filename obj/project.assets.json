@@ -11501,27 +11501,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Startklaar\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
+    "C:\\Users\\pawpr\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Startklaar\\Documents\\Amazon Project\\AmazonSimulator.csproj",
+      "projectUniqueName": "c:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\AmazonSimulator.csproj",
       "projectName": "AmazonSimulator",
-      "projectPath": "c:\\Users\\Startklaar\\Documents\\Amazon Project\\AmazonSimulator.csproj",
-      "packagesPath": "C:\\Users\\Startklaar\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Startklaar\\Documents\\Amazon Project\\obj\\",
+      "projectPath": "c:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\AmazonSimulator.csproj",
+      "packagesPath": "C:\\Users\\pawpr\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\pawpr\\Desktop\\AmazonSimulator1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Startklaar\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Users\\pawpr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"

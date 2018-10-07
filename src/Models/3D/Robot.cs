@@ -53,6 +53,7 @@ namespace Models
         }
         public void MoveOverPath(Graph pointGraph, Point point)
         {
+            //Berekent de route oor middel van Dijkstra en volgt die route als de task "RobotMove" aan de beurt is.
             _desiredPoint = point;
             if (route.Count == 1)
             {
@@ -169,6 +170,7 @@ namespace Models
             }
             if (route.Count > 1)
             {
+                //Beweegt de robot samen met de rack elke frame
                 this.Move(route[1]);
                 if (this.rack != null)
                 {

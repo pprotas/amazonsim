@@ -32,6 +32,7 @@ class Van extends THREE.Group {
          var selfRef = this;
          loadOBJModel("models/", "Van.obj", "textures/", "Van.mtl", (mesh) => {
             mesh.scale.set(0.1, 0.1, 0.1);
+            mesh.castShadow = true;
             selfRef.add(mesh);
 
             addPointLight(selfRef, 0xffffff, -1, 1.5, 2.6, 2, 5);

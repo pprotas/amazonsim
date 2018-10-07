@@ -40,6 +40,8 @@ class Robot extends THREE.Group {
          var selfRef = this;
          loadOBJModel("models/", "DomesticRobot_1293.obj", "textures/", "DomesticRobot_1293.mtl", (mesh) => {
             mesh.scale.set(0.05, 0.05, 0.05);
+            mesh.castShadow = true;
+            mesh.material = new THREE.MeshPhongMaterial;
             selfRef.add(mesh);
 
             addPointLight(selfRef, 0xff4751, 0, 0.75, 0, 2, 7);
@@ -51,13 +53,13 @@ class Robot extends THREE.Group {
 
 /**
  * Maakt een pointlight aan
- * @param {*} object 
- * @param {*} color 
- * @param {*} x 
- * @param {*} y 
- * @param {*} z 
- * @param {*} intensity 
- * @param {*} distance 
+ * @param {*} object Het 3D model die de pointlights krijgt
+ * @param {*} color De kleur van de pointlight 
+ * @param {*} x X-coordinaat
+ * @param {*} y Y
+ * @param {*} z Z
+ * @param {*} intensity Intensiteit van het licht
+ * @param {*} distance Schijnafstand van het licht
  */
 function addPointLight(object, color, x, y, z, intensity, distance) {
     var light = new THREE.PointLight(color, intensity, distance);
